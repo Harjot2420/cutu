@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>For My Beloved</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300&display=swap');
+
+  /* Reset and base styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(135deg, #fce3ec 0%, #ffd1d9 100%);
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #880022;
+    position: relative;
+  }
+
+  /* Animated floating hearts background */
+  .heart-background {
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .heart {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #ff4667;
+    opacity: 0.8;
+    transform: rotate(-45deg);
+    animation: floatUp linear infinite;
+    border-radius: 15% 85% 70% 30% / 30% 70% 30% 70%;
+    filter: drop-shadow(0 0 1px #ff4667da);
+  }
+  .heart:before,
+  .heart:after {
+    content: "";
+    position: absolute;
+    background: #ff4667;
+    border-radius: 50%;
+  }
+  .heart:before {
+    width: 30px;
+    height: 30px;
+    top: -15px;
+    left: 0;
+  }
+  .heart:after {
+    width: 30px;
+    height: 30px;
+    left: 15px;
+    top: 0;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translate3d(0, 0, 0) rotate(-45deg);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate3d(0, -120vh, 0) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* Container for all content */
+  .container {
+    position: relative;
+    z-index: 10;
+    background: rgba(255 255 255 / 0.72);
+    width: 90vw;
+    max-width: 720px;
+    padding: 3rem 2.5rem 4rem;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(255, 70, 103, 0.35);
+    text-align: center;
+  }
+
+  /* Big elegant heading */
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
+    margin-bottom: 0.3rem;
+    color: #d92567;
+    text-shadow: 1px 1px 8px #ffa1b9cc;
+    letter-spacing: 0.08em;
+  }
+
+  /* Heart shape in center */
+  .big-heart {
+    margin: 2rem auto 3rem;
+    width: 180px;
+    height: 160px;
+    position: relative;
+    animation: pulse 2.5s infinite ease-in-out;
+    cursor: pointer;
+  }
+
+  .big-heart::before,
+  .big-heart::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: #ff2f6d;
+    border-radius: 50%;
+    top: 0;
+  }
+  .big-heart::before {
+    left: 0;
+  }
+  .big-heart::after {
+    right: 0;
+  }
+  .big-heart > div {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #ff2f6d;
+    transform: rotate(45deg);
+    top: 20px;
+    left: 10px;
+    border-radius: 35% 60% 60% 35% / 60% 35% 60% 35%;
+    box-shadow: 0 5px 12px #ff4a7baa;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 8px #ff547fcc);
+    }
+    50% {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 20px #ff2f6d);
+    }
+  }
+
+  /* Lovely messages with fade animation */
+  .messages {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #b22b59;
+    min-height: 60px;
+    font-style: italic;
+    font-family: 'Great Vibes', cursive;
+    text-shadow: 1px 1px 6px #ffafc8cc;
+  }
+
+  /* Footer love signature */
+  .signature {
+    margin-top: 3rem;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #a0264d;
+    letter-spacing: 0.06em;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 3rem;
+    }
+    .big-heart {
+      width: 120px;
+      height: 110px;
+    }
+    .big-heart::before,
+    .big-heart::after {
+      width: 85px;
+      height: 85px;
+    }
+    .big-heart > div {
+      width: 110px;
+      height: 110px;
+      top: 10px;
+      left: 6px;
+    }
+    .messages {
+      font-size: 1.4rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="heart-background" aria-hidden="true"></div>
+
+<div class="container" role="main" aria-label="Lovely romantic messages for my girlfriend">
+  <h1>For My Beloved</h1>
+
+  <div class="big-heart" role="img" aria-label="Pulsing heart">
+    <div></div>
+  </div>
+
+  <div class="messages" id="messageDisplay" aria-live="polite"></div>
+
+  <div class="signature">With all my ❤, forever & always.</div>
+</div>
+
+<script>
+  // Messages to cycle through
+  const messages = [
+    "You are the light of my life.",
+    "Every moment with you feels magical.",
+    "You make my heart flutter like these hearts around.",
+    "Together, we create a beautiful story.",
+    "I cherish your smile more than anything.",
+    "You are my dream come true.",
+    "My love for you grows deeper every day.",
+    "Thank you for being my everything.",
+    "With you, every day is Valentine's Day.",
+    "I love you more than words can say."
+  ];
+
+  let currentIndex = 0;
+  const messageDisplay = document.getElementById('messageDisplay');
+
+  function showNextMessage() {
+    // Fade out current message
+    messageDisplay.style.opacity = 0;
+
+    setTimeout(() => {
+      // Update message text
+      messageDisplay.textContent = messages[currentIndex];
+      // Fade in
+      messageDisplay.style.opacity = 1;
+      // Update index
+      currentIndex = (currentIndex + 1) % messages.length;
+    }, 500);
+  }
+
+  // Initial message set
+  showNextMessage();
+
+  // Cycle messages every 4 seconds
+  setInterval(showNextMessage, 4000);
+
+  // Create floating hearts in the background
+  const heartContainer = document.querySelector('.heart-background');
+  const colors = ['#ff4667', '#ff7396', '#ffbad3', '#ff94ad'];
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    // Random horizontal position
+    heart.style.left = (Math.random() * 100) + 'vw';
+
+    // Random size between 15 and 40 px
+    const size = 15 + Math.random() * 25;
+    heart.style.width = size + 'px';
+    heart.style.height = size + 'px';
+
+    // Random animation duration between 8s and 14s
+    heart.style.animationDuration = (8 + Math.random() * 6) + 's';
+
+    // Random animation delay to stagger
+    heart.style.animationDelay = '-' + (Math.random() * 14) + 's';
+
+    // Random color from palette
+    heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+    heart.style.filter = `drop-shadow(0 0 3px ${heart.style.background}cc)`;
+
+    // Adjust before and after pseudo elements color using JS for consistency
+    heart.style.setProperty('--heart-color', heart.style.background);
+
+    heartContainer.appendChild(heart);
+
+    // Remove the heart after the animation finishes
+    setTimeout(() => {
+      heart.remove();
+    }, (parseFloat(heart.style.animationDuration) * 1000));
+  }
+
+  // Constantly create hearts every 300ms to create a feeling of floating hearts
+  setInterval(createHeart, 300);
+
+  // Add interactive click on big heart to show a surprise message
+  const bigHeart = document.querySelector('.big-heart');
+  let surpriseShown = false;
+  bigHeart.addEventListener('click', () => {
+    if (!surpriseShown) {
+      surpriseShown = true;
+      // Show a special message with animation
+      const originalMessage = messageDisplay.textContent;
+      messageDisplay.style.opacity = 0;
+      setTimeout(() => {
+        messageDisplay.textContent = "You are my sweetest forever 💖💖💖";
+        messageDisplay.style.opacity = 1;
+      }, 500);
+
+      // After 5 seconds, revert to cycling messages
+      setTimeout(() => {
+        surpriseShown = false;
+        currentIndex = 0;
+        showNextMessage();
+      }, 5500);
+    }
+  });
+
+</script>
+
+</body>
+</html>
+
